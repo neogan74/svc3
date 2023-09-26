@@ -15,17 +15,13 @@ all: docker-sales
 
 docker-sales:
 	docker  build \
-		-f leo/docker/Dockerfile-sales-api \
+		-f leo/docker/Dockerfile.sales-api \
 		-t sales-api3:${VERSION} \
 		--build-arg VCS_REF=${VERSION} \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%d%H:%M:%SZ"` \
 		.
 
 KIND_CLUSTER := leo-cluster 
-
-kind-start:
-	kind start cluster \
-	--name ${KIND_CLUSTER} \
 
 kind-up:
 	kind create cluster \
@@ -41,22 +37,22 @@ kind-status:
 		kubectl get pods -o wide --watch --all-namespaces
 
 kind-load-image:
-	kind load docker-image svc-arm64:${VERSION} --name ${KIND_CLUSTER}
+	kind load docker-image sales-api3:${VERSION} --name ${KIND_CLUSTER}
 
 k8s-apply:
-	cat leo/k8s/base/service-pod.yaml | kubectl apply -f -
+	cat leo/k8s/base/sales-pod.yaml | kubectl apply -f -
 
 kustomize-apply:
-	kustomize build leo/k8s/kind/service-pod | kubectl apply -f -
+	kustomize build leo/k8s/kind/sales-pod | kubectl apply -f -
 
 
 k8s-logs:
 	kubectl logs -n leo-service -l app=leo-service --all-containers=true -f --tail=100
 
-k8s-restart-leo-service:
-	kubectl rollout restart deployment leo-service -n leo-service 
+k8s-restart-leo-sales:
+	kubectl rollout restart deployment leo-sales -n leo-sales 
 
-kind-update: all kind-load-image k8s-restart-leo-service
+kind-update: all kind-load-image k8s-restart-leo-sales
 
 kind-describe:
 	kubectl describe nodes 
