@@ -11,12 +11,12 @@ build:
 
 VERSION := 0.3
 
-all: docker-svc
+all: docker-sales
 
-docker-svc:
+docker-sales:
 	docker  build \
-		-f leo/docker/Dockerfile \
-		-t svc-arm64:${VERSION} \
+		-f leo/docker/Dockerfile-sales-api \
+		-t sales-api3:${VERSION} \
 		--build-arg VCS_REF=${VERSION} \
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%d%H:%M:%SZ"` \
 		.

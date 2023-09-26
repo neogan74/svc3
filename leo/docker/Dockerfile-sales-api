@@ -1,4 +1,4 @@
-FROM golang:1.21 AS build_svc3
+FROM golang:1.21 AS build_sales-api3
 ENV CGO_ENABLED 0
 ARG VCS_REF
 ARG BUILD_REF
@@ -7,7 +7,7 @@ ARG BUILD_REF
 COPY . /service
 
 # Build the svc3 binary
-WORKDIR /service
+WORKDIR /service/app/services/sales-api
 RUN go build -ldflags "-X main.build=${BUILD_REF}"
 CMD ["ls -al ./"]
  
@@ -18,9 +18,9 @@ ARG BUILD_DATE
 ARG BUILD_REF
 ARG VCS_REF
 
-COPY --from=build_svc3 /service/svc3 /service/svc3 
+COPY --from=build_sales-api3 /service/app/services/sales-api /service/sales-api 
 WORKDIR /service
-CMD ["./svc3"]
+CMD ["./sales-api3"]
 
 LABEL org.opencontainers.image.created="${BUILD_DATE}" \
       org.opencontainers.image.title="svc3" \
