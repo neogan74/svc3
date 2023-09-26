@@ -1,0 +1,9 @@
+.circleci/
+.git/
+.reading/
+.dockerignore
+.gitignore
+leo/docker/
+leo/k8s/
+README.md
+makefile
