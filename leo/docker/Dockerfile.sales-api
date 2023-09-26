@@ -18,9 +18,9 @@ ARG BUILD_DATE
 ARG BUILD_REF
 ARG VCS_REF
 
-COPY --from=build_sales-api3 /service/app/services/sales-api /service/sales-api 
+COPY --from=build_sales-api3 /service/app/services/sales-api/sales-api /service/sales-api 
 WORKDIR /service
-CMD ["./sales-api3"]
+CMD ["./sales-api"]
 
 LABEL org.opencontainers.image.created="${BUILD_DATE}" \
       org.opencontainers.image.title="svc3" \
