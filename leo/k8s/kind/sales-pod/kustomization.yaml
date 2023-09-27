@@ -4,3 +4,7 @@ resources:
 - ../../base/sales-pod/
 patches:
 - path: ./kind-sales-patch.yaml
+images:
+- name: sales-api-image
+  newName: sales-api3
+  newTag: "0.4"

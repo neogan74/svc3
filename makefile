@@ -9,7 +9,7 @@ build:
 
 # Building containers
 
-VERSION := 0.3
+VERSION := 0.4
 
 all: docker-sales
 
@@ -37,6 +37,7 @@ kind-status:
 		kubectl get pods -o wide --watch --all-namespaces
 
 kind-load-image:
+	cd leo/k8s/kind/sales-pod; kustomize edit set image sales-api-image=sales-api3:${VERSION}
 	kind load docker-image sales-api3:${VERSION} --name ${KIND_CLUSTER}
 
 k8s-apply:
