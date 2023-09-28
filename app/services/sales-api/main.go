@@ -14,24 +14,14 @@ var service = "SALES-API"
 func main() {
 
 	// Constructing logger
-	logconfig := zap.NewProductionConfig()
-	logconfig.OutputPaths = []string{"stdout"}
-	logconfig.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
-	logconfig.DisableStacktrace = true
-	logconfig.InitialFields = map[string]interface{}{
-		"service": service,
-	}
-
-	log, err := logconfig.Build()
+	log, err := initLogger(service)
 	if err != nil {
-		fmt.Println("Error constructing logger", err)
-		os.Exit(1)
+		fmt.Println("Cannot init logger", err)
 	}
-
 	defer log.Sync()
 
-	if err := run(log.Sugar()); err != nil {
-		log.Sugar().Errorw("startup", "ERROR", err)
+	if err := run(log); err != nil {
+		log.Errorw("startup", "ERROR", err)
 		os.Exit(1)
 	}
 
@@ -54,4 +44,21 @@ func main() {
 
 func run(log *zap.SugaredLogger) error {
 	return nil
+}
+
+func initLogger(service string) (*zap.SugaredLogger, error) {
+	logconfig := zap.NewProductionConfig()
+	logconfig.OutputPaths = []string{"stdout"}
+	logconfig.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+	logconfig.DisableStacktrace = true
+	logconfig.InitialFields = map[string]interface{}{
+		"service": service,
+	}
+
+	llog, err := logconfig.Build()
+	if err != nil {
+		return nil, err
+	}
+
+	return llog.Sugar(), nil
 }
