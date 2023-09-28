@@ -13,7 +13,7 @@ var service = "SALES-API"
 
 func main() {
 
-	// Constructing logger
+	// Constructing application logger
 	log, err := initLogger(service)
 	if err != nil {
 		fmt.Println("Cannot init logger", err)
