@@ -1,15 +1,15 @@
 SHELL := /bin/bash
 
 run:
-	go run main.go
+	go run ./app/services/sales-api/main.go | go run ./app/services/tooling/logfmt/main.go  
 
 build:
 	# go build -ldflags "-X main.build=${VCS_REF}"
-	go build -ldflags "-X main.build=${BUILD_REF}"
+	go build -ldflags "-X main.build=${BUILD_REF}" ./app/services/sales-api/main.go
 
 # Building containers
 
-VERSION := 0.4
+VERSION := 0.5
 
 all: docker-sales
 
@@ -48,7 +48,7 @@ kustomize-apply:
 
 
 k8s-logs:
-	kubectl logs -n leo-service -l app=leo-service --all-containers=true -f --tail=100
+	kubectl logs -n leo-sales -l app=leo-sales --all-containers=true -f --tail=100
 
 k8s-restart-leo-sales:
 	kubectl rollout restart deployment leo-sales -n leo-sales 
@@ -58,7 +58,7 @@ kind-update: all kind-load-image k8s-restart-leo-sales
 kind-describe:
 	kubectl describe nodes 
 	kubectl describe svc 
-	kubectl describe pod -l app=leo-service -n leo-service
+	kubectl describe pod -l app=leo-sales -n leo-service
 
 tidy:
 	go mod tidy 
