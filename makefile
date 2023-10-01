@@ -63,3 +63,6 @@ kind-describe:
 tidy:
 	go mod tidy 
 	go mod vendor
+
+expvarsmon:
+	~/go/bin/expvarmon -ports=":4000"
