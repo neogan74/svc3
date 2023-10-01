@@ -9,7 +9,7 @@ build:
 
 # Building containers
 
-VERSION := 0.5
+VERSION := 0.7
 
 all: docker-sales
 
@@ -53,7 +53,7 @@ k8s-logs:
 k8s-restart-leo-sales:
 	kubectl rollout restart deployment leo-sales -n leo-sales 
 
-kind-update: all kind-load-image k8s-restart-leo-sales
+kind-update: all kind-load-image kustomize-apply k8s-restart-leo-sales
 
 kind-describe:
 	kubectl describe nodes 

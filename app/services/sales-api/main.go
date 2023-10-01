@@ -3,11 +3,15 @@ package main
 import (
 	"errors"
 	"fmt"
+	"net/http"
 	"os"
+	"os/signal"
 	"runtime"
+	"syscall"
 	"time"
 
 	"github.com/ardanlabs/conf"
+	"github.com/neogan74/svc3/app/services/sales-api/handlers"
 	_ "go.uber.org/automaxprocs"
 	"go.uber.org/automaxprocs/maxprocs"
 	"go.uber.org/zap"
@@ -84,7 +88,7 @@ func run(log *zap.SugaredLogger) error {
 		}
 		return fmt.Errorf("parsing config: %w", err)
 	}
-
+	// =====================
 	// App start
 	log.Infow("starting service...", "version", build)
 	defer log.Infow("shutdown complete")
@@ -94,6 +98,30 @@ func run(log *zap.SugaredLogger) error {
 		return fmt.Errorf("generating config for output: %w", err)
 	}
 	log.Infow("startup", "config", out)
+	// =====================
+
+	// ====================
+	// start debug service
+	log.Infow("startup", "status", "Debug router started", "host", cfg.Web.DebugHost)
+
+	// THe Debug function returns a mux to lister and serve on for all the debug
+	// related endpoints. This include the standard library endpoints.
+
+	// constuct the mux for the build calls.
+	debugMux := handlers.DebugStandardLibraryMux()
+
+	// Start the service listening for debug requests.
+	// Not concerned with suttling this down with load shedding.
+
+	go func() {
+		if err := http.ListenAndServe(cfg.Web.DebugHost, debugMux); err != nil {
+			log.Errorf("shutdown", "status", "debug router closed", "host", cfg.Web.DebugHost, "ERROR", err)
+		}
+	}()
+
+	shutdown := make(chan os.Signal, 1)
+	signal.Notify(shutdown, syscall.SIGINT, syscall.SIGTERM)
+	<-shutdown
 
 	return nil
 }
