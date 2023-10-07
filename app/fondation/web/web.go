@@ -5,6 +5,9 @@ import (
 	"net/http"
 	"os"
 	"syscall"
+	"time"
+
+	"github.com/google/uuid"
 
 	"github.com/dimfeld/httptreemux/v5"
 )
@@ -47,7 +50,21 @@ func (a *App) Handle(method string, group string, path string, handler Handler, 
 		// Logging  Started
 		// Call the wrapped handler functions
 		if err := handler(r.Context(), w, r); err != nil {
+			ctx := r.Context()
 
+			v := Values{
+				// TraceID: span.SpanContext().TraceID().String(),
+				TraceID: uuid.New().String(),
+				Now:     time.Now(),
+			}
+
+			ctx = context.WithValue(ctx, key, &v)
+
+			// Call the wrapped handler functions
+			if err := handler(ctx, w, r); err != nil {
+				a.SignalShutdown()
+				return
+			}
 			// Logging error - handle it
 			// error handling
 			return

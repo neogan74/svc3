@@ -50,6 +50,9 @@ kustomize-apply:
 k8s-logs:
 	kubectl logs -n leo-sales -l app=leo-sales --all-containers=true -f --tail=100
 
+k8s-logs-pretty:
+	kubectl logs -n leo-sales -l app=leo-sales --all-containers=true -f --tail=100 | go run ./app/services/tooling/logfmt/main.go 
+
 k8s-restart-leo-sales:
 	kubectl rollout restart deployment leo-sales -n leo-sales 
 
