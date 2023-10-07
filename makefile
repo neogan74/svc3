@@ -55,6 +55,8 @@ k8s-restart-leo-sales:
 
 kind-update: all kind-load-image kustomize-apply k8s-restart-leo-sales
 
+kind-update-apply: all kind-update kustomize-apply
+
 kind-describe:
 	kubectl describe nodes 
 	kubectl describe svc 
