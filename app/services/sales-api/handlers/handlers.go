@@ -52,7 +52,7 @@ func ApiMux(cfg ApiMuxConfig) http.Handler {
 		Log: cfg.Log,
 	}
 
-	mux.Handle(http.MethodGet, "/test", thg.Test)
+	mux.Handle(http.MethodGet, "/v1/test", thg.Test)
 
 	return mux
 }
