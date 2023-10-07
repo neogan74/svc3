@@ -6,7 +6,7 @@ import (
 	"net/http/pprof"
 	"os"
 
-	"github.com/dimfeld/httptreemux/v5"
+	"github.com/neogan74/svc3/app/fondation/web"
 	"github.com/neogan74/svc3/app/services/sales-api/handlers/debug/checkgrp"
 	"github.com/neogan74/svc3/app/services/sales-api/handlers/v1/testgrp"
 	"go.uber.org/zap"
@@ -45,14 +45,14 @@ type ApiMuxConfig struct {
 	Log      *zap.SugaredLogger
 }
 
-func ApiMux(cfg ApiMuxConfig) http.Handler {
-	mux := httptreemux.NewContextMux()
+func ApiMux(cfg ApiMuxConfig) *web.App {
+	app := web.NewApp(cfg.Shutdown)
 
 	thg := testgrp.Handlers{
 		Log: cfg.Log,
 	}
 
-	mux.Handle(http.MethodGet, "/v1/test", thg.Test)
+	app.Handle(http.MethodGet, "/v1/test", thg.Test)
 
-	return mux
+	return app
 }
