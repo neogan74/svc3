@@ -46,13 +46,25 @@ type ApiMuxConfig struct {
 }
 
 func ApiMux(cfg ApiMuxConfig) *web.App {
-	app := web.NewApp(cfg.Shutdown)
+	// Construct the web.App which holds all routes as well as common Midleware
+	app := web.NewApp(
+		cfg.Shutdown,
+	)
+
+	// Load the routes for the different versions of the API.
+	v1(app, cfg)
+
+	return app
+}
+
+// v1 Binds all version 1 routes
+func v1(app *web.App, cfg ApiMuxConfig) {
+	const version = "v1"
 
 	thg := testgrp.Handlers{
 		Log: cfg.Log,
 	}
 
-	app.Handle(http.MethodGet, "/v1/test", thg.Test)
+	app.Handle(http.MethodGet, version, "/test", thg.Test)
 
-	return app
 }
