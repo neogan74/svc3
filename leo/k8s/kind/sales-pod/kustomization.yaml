@@ -7,4 +7,4 @@ patches:
 images:
 - name: sales-api-image
   newName: sales-api3
-  newTag: "1.1"
+  newTag: "1.2"
