@@ -9,6 +9,7 @@ import (
 	"github.com/neogan74/svc3/app/fondation/web"
 	"github.com/neogan74/svc3/app/services/sales-api/handlers/debug/checkgrp"
 	"github.com/neogan74/svc3/app/services/sales-api/handlers/v1/testgrp"
+	"github.com/neogan74/svc3/business/web/mid"
 	"go.uber.org/zap"
 )
 
@@ -49,6 +50,7 @@ func ApiMux(cfg ApiMuxConfig) *web.App {
 	// Construct the web.App which holds all routes as well as common Midleware
 	app := web.NewApp(
 		cfg.Shutdown,
+		mid.Logger(cfg.Log),
 	)
 
 	// Load the routes for the different versions of the API.
