@@ -52,7 +52,7 @@ func (h Handlers) Liveness(w http.ResponseWriter, r *http.Request) {
 		Build:     h.Build,
 		Host:      host,
 		Pod:       os.Getenv("KUBERNETES_PODNAME"),
-		PodIP:     os.Getenv("KUBERNETES_NAMESPACE_POD_IP"),
+		PodIP:     os.Getenv("KUBERNETES_PODIP"),
 		Node:      os.Getenv("KUBERNETES_NODENAME"),
 		Namespace: os.Getenv("KUBERNETES_NAMESPACE"),
 	}

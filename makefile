@@ -9,7 +9,7 @@ build:
 
 # Building containers
 
-VERSION := 0.8
+VERSION := 1.1
 
 all: docker-sales
 

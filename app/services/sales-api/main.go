@@ -20,7 +20,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-var build = "develop"
+var build = "1.1"
 var service = "SALES-API"
 
 func main() {
