@@ -7,6 +7,7 @@ import (
 	"runtime/debug"
 
 	"github.com/neogan74/svc3/app/fondation/web"
+	"github.com/neogan74/svc3/business/sys/metrics"
 )
 
 func Panics() web.Midleware {
@@ -21,6 +22,8 @@ func Panics() web.Midleware {
 					trace := debug.Stack()
 
 					err = fmt.Errorf("PANIC [%v] TRACE: [%s]", rec, trace)
+
+					metrics.AddPanics(ctx)
 				}
 			}()
 
