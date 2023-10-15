@@ -30,6 +30,10 @@ func (h Handlers) Test(ctx context.Context, w http.ResponseWriter, r *http.Reque
 		return web.NewShutdownError("going down now")
 	}
 
+	if n := rand.Intn(1000); n%2 == 0 {
+		panic("testing panic")
+	}
+
 	status := struct {
 		Status string
 	}{
