@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"runtime/debug"
 
 	"github.com/neogan74/svc3/app/fondation/web"
 )
@@ -16,7 +17,10 @@ func Panics() web.Midleware {
 		h := func(ctx context.Context, w http.ResponseWriter, r *http.Request) (err error) {
 			defer func() {
 				if rec := recover(); rec != nil {
-					err = fmt.Errorf("PANIC [%v]", rec)
+
+					trace := debug.Stack()
+
+					err = fmt.Errorf("PANIC [%v] TRACE: [%s]", rec, trace)
 				}
 			}()
 
