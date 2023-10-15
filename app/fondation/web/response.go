@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func Response(ctx context.Context, w http.ResponseWriter, data interface{}, statusCode int) error {
+func Respond(ctx context.Context, w http.ResponseWriter, data interface{}, statusCode int) error {
 
 	SetStatusCode(ctx, statusCode)
 

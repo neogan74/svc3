@@ -18,7 +18,7 @@ func (se *shutdownError) Error() string {
 }
 
 // IsShutodwn checks to see if the shutdown error is contained in the specified error value
-func isShutdown(err error) bool {
+func IsShutdown(err error) bool {
 	var se *shutdownError
 	return errors.As(err, &se)
 }
