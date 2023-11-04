@@ -71,3 +71,5 @@ tidy:
 
 expvarsmon:
 	~/go/bin/expvarmon -ports=":4000"
+metrics:
+	~/go/bin/expvarmon -ports="localhost:4000" -vars="build,requests,goroutines,errors,panics,mem:memstats.Alloc"
