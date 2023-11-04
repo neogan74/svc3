@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"runtime/debug"
 
-	"github.com/neogan74/svc3/app/fondation/web"
 	"github.com/neogan74/svc3/business/sys/metrics"
+	"github.com/neogan74/svc3/fondation/web"
 )
 
 func Panics() web.Midleware {

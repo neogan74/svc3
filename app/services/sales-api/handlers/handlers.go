@@ -6,10 +6,10 @@ import (
 	"net/http/pprof"
 	"os"
 
-	"github.com/neogan74/svc3/app/fondation/web"
 	"github.com/neogan74/svc3/app/services/sales-api/handlers/debug/checkgrp"
 	"github.com/neogan74/svc3/app/services/sales-api/handlers/v1/testgrp"
 	"github.com/neogan74/svc3/business/web/mid"
+	"github.com/neogan74/svc3/fondation/web"
 	"go.uber.org/zap"
 )
 
