@@ -50,6 +50,8 @@ func (a *App) Handle(method string, group string, path string, handler Handler, 
 		// Logging  Started
 		// Call the wrapped handler functions
 		if err := handler(r.Context(), w, r); err != nil {
+			//Pull the context from request and
+			// use it as a separate parameter.
 			ctx := r.Context()
 
 			v := Values{
