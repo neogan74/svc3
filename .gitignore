@@ -1,1 +1,18 @@
-svc3
+# Binares
+*.exe
+*.exe~
+*.ddl
+*.so
+*.dylib
+app/services/sales-api/sales-api
+
+#test binaries
+*.test
+
+*.out
+
+
+#MAC
+.DS_Store
+
+vendor/

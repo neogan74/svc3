@@ -1,0 +1,30 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: leo-sales
+  namespace: leo-sales
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: leo-sales
+  template:
+    metadata:
+      labels:
+        app: leo-sales
+    spec:
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
+      terminationGracePeriodSeconds: 60
+      containers:
+      - name: leo-sales
+        image: sales-api-image
+        resources:
+          limits:
+            cpu: "2000m"
+            memory: "128M"
+          requests:
+            cpu: "1000m"
+            memory: "64M"
