@@ -74,5 +74,9 @@ expvarsmon:
 metrics:
 	~/go/bin/expvarmon -ports="localhost:4000" -vars="build,requests,goroutines,errors,panics,mem:memstats.Alloc"
 
+
+install-expvarmon:
+	go install github.com/divan/expvarmon@latest
+
 stress:
 	hey -m GET -c 100 -n 10000 http://localhost:3000/v1/test
