@@ -3,6 +3,9 @@ SHELL := /bin/bash
 run:
 	go run ./app/services/sales-api/main.go | go run ./app/services/tooling/logfmt/main.go  
 
+admin-genkey:
+	go run app/tooling/admin/main.go
+
 build:
 	# go build -ldflags "-X main.build=${VCS_REF}"
 	go build -ldflags "-X main.build=${BUILD_REF}" ./app/services/sales-api/main.go
