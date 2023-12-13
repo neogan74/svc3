@@ -79,13 +79,13 @@ func genToken() error {
 
 	// ==============================================================
 
-	str, err := token.SignedString(PrivateKey)
+	tokenStr, err := token.SignedString(PrivateKey)
 	if err != nil {
 		return err
 	}
 
 	fmt.Println("======= TOKEN BEGIN =============")
-	fmt.Println(str)
+	fmt.Println(tokenStr)
 	fmt.Println("======= TOKEN END ===============")
 	fmt.Print("\n")
 
@@ -106,6 +106,41 @@ func genToken() error {
 	if err := pem.Encode(os.Stdout, &publicBlock); err != nil {
 		return fmt.Errorf("encoding to publci file: %w", err)
 	}
+
+	// ==============================================================
+
+	// create the token parser to use
+
+	parser := jwt.Parser{
+		ValidMethods: []string{"RS256"},
+	}
+
+	var parsedClaims MyClaims
+	fmt.Println("===========================")
+
+	keyFunc := func(t *jwt.Token) (interface{}, error) {
+		kid, ok := t.Header["kid"]
+		if !ok {
+			return nil, fmt.Errorf("missing key id (kid) in the token header")
+		}
+		kidID, ok := kid.(string)
+		if !ok {
+			return nil, fmt.Errorf("user token key id (kid) nust be a string")
+		}
+		fmt.Println("KID: ", kidID)
+		return &PrivateKey.PublicKey, nil
+	}
+
+	parsedToken, err := parser.ParseWithClaims(tokenStr, &parsedClaims, keyFunc)
+	if err != nil {
+		return fmt.Errorf("parsing token: %w", err)
+	}
+
+	if !parsedToken.Valid {
+		return fmt.Errorf("invalid token")
+	}
+
+	fmt.Println("Token Validated!")
 
 	return nil
 }
