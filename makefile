@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-run:
+pretty-log-vew:
 	go run ./app/services/sales-api/main.go | go run ./app/services/tooling/logfmt/main.go  
 
 admin-genkey:
