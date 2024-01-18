@@ -47,8 +47,9 @@ k8s-apply:
 	cat leo/k8s/base/sales-pod.yaml | kubectl apply -f -
 
 kustomize-apply:
+	kustomize build leo/k8s/kind/database-pod | kubectl apply -f -
+	kubectl wait --namespace=database-system --timeout=120s --for=condition=Available deployment/database-pod
 	kustomize build leo/k8s/kind/sales-pod | kubectl apply -f -
-
 
 k8s-logs:
 	kubectl logs -n leo-sales -l app=leo-sales --all-containers=true -f --tail=100
@@ -61,7 +62,7 @@ k8s-restart-leo-sales:
 
 kind-update: all kind-load-image kustomize-apply k8s-restart-leo-sales
 
-kind-update-apply: all kind-update kustomize-apply
+kind-update-apply: all kind-update
 
 kind-describe:
 	kubectl describe nodes 
